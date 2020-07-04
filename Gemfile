@@ -6,3 +6,4 @@ ruby '2.6.5'
 
 gem 'gosu'
 gem 'rubocop'
+gem 'solargraph'
