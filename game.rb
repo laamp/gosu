@@ -1,13 +1,18 @@
 # frozen_string_literal: true
 
-require 'gosu'
+$LOAD_PATH.concat(
+  [
+    File.join(File.dirname(__FILE__), 'modules'),
+    File.join(File.dirname(__FILE__), 'classes')
+  ]
+)
 
-require_relative 'classes/player'
+%w[gosu globals player].each(&method(:require))
 
 # entry point for the game
 class Game < Gosu::Window
   def initialize
-    super(1024, 768)
+    super(Globals::HORIZONTAL_RESOLUTION, Globals::VERTICAL_RESOLUTION)
     self.caption = 'Gosuvania'
 
     @background_image = Gosu::Image.new('assets/sprites/placeholder.png')
