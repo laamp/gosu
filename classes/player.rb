@@ -24,10 +24,24 @@ class Player
     move
   end
 
+  def move
+    self.x += x_vel
+    self.y += y_vel
+
+    self.x_vel *= 0.8
+    self.y_vel *= 0.8
+  end
+
+  def draw
+    Gosu.draw_rect(x, y, w, h, color)
+  end
+
   def warp(new_x_pos, new_y_pos)
     self.x = new_x_pos
     self.y = new_y_pos
   end
+
+  private
 
   def moving_left
     self.x_vel -= 2.0
@@ -43,17 +57,5 @@ class Player
 
   def moving_down
     self.y_vel += 2.0
-  end
-
-  def move
-    self.x += self.x_vel
-    self.y += self.y_vel
-
-    self.x_vel *= 0.8
-    self.y_vel *= 0.8
-  end
-
-  def draw
-    Gosu.draw_rect(x, y, w, h, color)
   end
 end
