@@ -2,42 +2,58 @@
 
 # Human controlled player class
 class Player
+  attr_accessor :x, :y, :x_vel, :y_vel
+  attr_reader :w, :h, :color
+
   def initialize
-    @image = Gosu::Image.new('assets/sprites/confused-parrot.gif')
+    @color = Gosu::Color.new(255, 175, 175, 0)
+    @w = 64
+    @h = 64
     @x = @y = @x_vel = @y_vel = 0.0
-    @hp = 12
+
+    self.x = (Globals::SCREEN_WIDTH / 2) - (w / 2)
+    self.y = (Globals::SCREEN_HEIGHT / 2) - (h / 2)
+  end
+
+  def update
+    moving_left if Gosu.button_down?(Gosu::KB_A)
+    moving_right if Gosu.button_down?(Gosu::KB_D)
+    moving_up if Gosu.button_down?(Gosu::KB_W)
+    moving_down if Gosu.button_down?(Gosu::KB_S)
+
+    move
   end
 
   def warp(new_x_pos, new_y_pos)
-    @x = new_x_pos
-    @y = new_y_pos
+    self.x = new_x_pos
+    self.y = new_y_pos
   end
 
-  def move_left
-    @x_vel -= 2.0
+  def moving_left
+    self.x_vel -= 2.0
   end
 
-  def move_right
-    @x_vel += 2.0
+  def moving_right
+    self.x_vel += 2.0
   end
 
-  def move_up
-    @y_vel -= 2.0
+  def moving_up
+    self.y_vel -= 2.0
   end
 
-  def move_down
-    @y_vel += 2.0
+  def moving_down
+    self.y_vel += 2.0
   end
 
   def move
-    @x += @x_vel
-    @y += @y_vel
+    self.x += self.x_vel
+    self.y += self.y_vel
 
-    @x_vel *= 0.7
-    @y_vel *= 0.7
+    self.x_vel *= 0.8
+    self.y_vel *= 0.8
   end
 
   def draw
-    @image.draw_rot(@x, @y, 1, 0)
+    Gosu.draw_rect(x, y, w, h, color)
   end
 end

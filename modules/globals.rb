@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Globals
-  HORIZONTAL_RESOLUTION = 1024
-  VERTICAL_RESOLUTION = 768
+  GAME_NAME = 'Gosuvania'
+  SCREEN_WIDTH = 1280
+  SCREEN_HEIGHT = 1024
 end

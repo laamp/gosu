@@ -7,36 +7,31 @@ $LOAD_PATH.concat(
   ]
 )
 
-%w[gosu globals player].each(&method(:require))
+%w[gosu globals game_object player].each(&method(:require))
 
 # entry point for the game
 class Game < Gosu::Window
-  def initialize
-    super(Globals::HORIZONTAL_RESOLUTION, Globals::VERTICAL_RESOLUTION)
-    self.caption = 'Gosuvania'
+  attr_reader :player
 
-    @background_image = Gosu::Image.new('assets/sprites/placeholder.png')
+  def initialize
+    super(Globals::SCREEN_WIDTH, Globals::SCREEN_HEIGHT)
+    self.caption = Globals::GAME_NAME
 
     @player = Player.new
-    @player.warp(512, 384)
+    @object = GameObject.new
+    @object.place(200, 800)
   end
 
   def update
-    @player.move_left if
-      Gosu.button_down?(Gosu::KB_LEFT) || Gosu.button_down?(Gosu::KB_A)
-    @player.move_right if
-      Gosu.button_down?(Gosu::KB_RIGHT) || Gosu.button_down?(Gosu::KB_D)
-    @player.move_up if
-      Gosu.button_down?(Gosu::KB_UP) || Gosu.button_down?(Gosu::KB_W)
-    @player.move_down if
-      Gosu.button_down?(Gosu::KB_DOWN) || Gosu.button_down?(Gosu::KB_S)
+    player.update
 
-    @player.move
+    p 'collision?' if player.x < @object.x
   end
 
   def draw
-    @background_image.draw(0, 0, 0)
-    @player.draw
+    Gosu.draw_rect(0, 0, Globals::SCREEN_WIDTH, Globals::SCREEN_HEIGHT, Gosu::Color.new(255, 65, 0, 85))
+    player.draw
+    @object.draw
   end
 
   def button_down(id)
