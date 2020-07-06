@@ -2,7 +2,7 @@
 
 # Human controlled player class
 class Player
-  attr_accessor :x, :y, :x_vel, :y_vel
+  attr_accessor :x, :y, :x_vel, :y_vel, :on_ground
   attr_reader :w, :h, :color
 
   def initialize
@@ -10,12 +10,14 @@ class Player
     @w = 64
     @h = 64
     @x = @y = @x_vel = @y_vel = 0.0
+    @on_ground = false
 
-    self.x = (Globals::SCREEN_WIDTH / 2) - (w / 2)
-    self.y = (Globals::SCREEN_HEIGHT / 2) - (h / 2)
+    warp((Globals::SCREEN_WIDTH / 2) - (w / 2), 0)
   end
 
   def update
+    apply_gravity unless on_ground
+
     moving_left if Gosu.button_down?(Gosu::KB_A)
     moving_right if Gosu.button_down?(Gosu::KB_D)
     moving_up if Gosu.button_down?(Gosu::KB_W)
@@ -41,7 +43,19 @@ class Player
     self.y = new_y_pos
   end
 
+  def grounded
+    self.on_ground = true
+    self.y_vel = 0
+  end
+
   private
+
+  def apply_gravity
+    self.y_vel += 1.0
+    self.y_vel *= 1.18
+
+    self.y_vel = [y_vel, 18.0].min
+  end
 
   def moving_left
     self.x_vel -= 2.0
