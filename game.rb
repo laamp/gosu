@@ -31,16 +31,19 @@ class Game < Gosu::Window
   end
 
   def draw
+    # background
     Gosu.draw_rect(0, 0, Globals::SCREEN_WIDTH, Globals::SCREEN_HEIGHT, Gosu::Color.new(255, 65, 0, 85))
-    player.draw
+
     game_objects.each(&:draw)
+    player.draw
   end
 
   def collision?(obj_a, obj_b)
-    (obj_a.x < obj_b.x + obj_b.w) &&   # left edge <- right edge
-      (obj_a.x + obj_a.w > obj_b.x) && # right edge -> left edge
-      (obj_a.y < obj_b.y + obj_b.h) && # top edge <- bottom edge
-      (obj_a.y + obj_a.h > obj_b.y)    # bottom edge -> top edge
+    # aabb collision between two objects
+    (obj_a.x < obj_b.x + obj_b.w) &&
+      (obj_a.x + obj_a.w > obj_b.x) &&
+      (obj_a.y < obj_b.y + obj_b.h) &&
+      (obj_a.y + obj_a.h > obj_b.y)
   end
 
   def generate_floor
